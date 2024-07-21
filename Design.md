@@ -2,9 +2,9 @@
 
 ## Problem
 Develop a program to collect data from news websites, specifically economics news from:
-- [La Republica](www.larepublica.com)
-- [El Tiempo](www.eltiempo.com)
-- [El Espectador](www.elespectador.com)
+- La Republica
+- El Tiempo
+- El Espectador
 
 The information to extract from each news article is the following:
 - Title
@@ -24,10 +24,10 @@ The program must generate a log file with general information about each process
 ## Conceptual Design
 
 ### Input/Output Diagram
--- Website URLs --> [ **Economics News Scraper** ] -- JSON file (current date) -->
+-- Single URL --> [ **Economics News Scraper** ] -- JSON file (current date) -->
 
 ### Subsystem Decomposition
--- Website URLs --> [ **Select one Website URL** ] -- Single URL --> [ **Perform a GET Request** ] -- HTML File --> [ **Extract News URLs** ] -- News URLs --> [ **Select one News URL** ] -- News URL --> [ **Perform a GET Request** ] -- HTML File --> [ **Extract News Information** ] -- News Information --> [ **Save Data in the JSON File** ]
+-- Single URL --> [ **Perform a GET Request** ] -- HTML File --> [ **Extract News URLs** ] -- News URLs --> [ **Select one News URL** ] -- News URL --> [ **Perform a GET Request** ] -- HTML File --> [ **Extract News Information** ] -- News Information --> [ **Save Data in the JSON File** ]
 
 ## Detailed Design
 
@@ -47,7 +47,8 @@ File Name: `settings.json`
   "news websites": [
     {
       "name": "La Republica",
-      "url": "www.larepublica.com",
+      "url": "www.larepublica.co/economia/",
+      "XPATHS_NEWS_URLS_LOCATIONS": [],
       "XPATH_TITLE": "",
       "XPATH_DATE": "",
       "XPATH_LEAD": "",
@@ -56,7 +57,8 @@ File Name: `settings.json`
     },
     {
       "name": "El Espectador",
-      "url": "www.elespectador.com",
+      "url": "www.elespectador.com/economia/",
+      "XPATHS_NEWS_URLS_LOCATIONS": [],
       "XPATH_TITLE": "",
       "XPATH_DATE": "",
       "XPATH_LEAD": "",
@@ -65,7 +67,8 @@ File Name: `settings.json`
     },
     {
       "name": "El Tiempo",
-      "url": "www.eltiempo.com",
+      "url": "www.eltiempo.com/economia/",
+      "XPATHS_NEWS_URLS_LOCATIONS": [],
       "XPATH_TITLE": "",
       "XPATH_DATE": "",
       "XPATH_LEAD": "",
@@ -76,8 +79,8 @@ File Name: `settings.json`
 }
 ```
 
-**Structure of JSON Settings File**
-File Name: `settings.json`
+**Structure of JSON News File**
+File Name: `news-dd-mm-yyyy.json`
 ```json
 [
   {
