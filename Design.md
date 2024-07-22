@@ -44,36 +44,33 @@ File Name: `settings.json`
 
 ```json
 {
-  "news websites": [
+  "news_websites": [
     {
-      "name": "La Republica",
+      "name": "la_republica",
       "url": "www.larepublica.co/economia/",
       "XPATHS_NEWS_URLS_LOCATIONS": [],
       "XPATH_TITLE": "",
       "XPATH_DATE": "",
       "XPATH_LEAD": "",
-      "XPATH_AUTHOR": "",
-      "XPATH_NEWS_URL": ""
+      "XPATH_AUTHOR": ""
     },
     {
-      "name": "El Espectador",
+      "name": "el_espectador",
       "url": "www.elespectador.com/economia/",
       "XPATHS_NEWS_URLS_LOCATIONS": [],
       "XPATH_TITLE": "",
       "XPATH_DATE": "",
       "XPATH_LEAD": "",
-      "XPATH_AUTHOR": "",
-      "XPATH_NEWS_URL": ""
+      "XPATH_AUTHOR": ""
     },
     {
-      "name": "El Tiempo",
+      "name": "el_tiempo",
       "url": "www.eltiempo.com/economia/",
       "XPATHS_NEWS_URLS_LOCATIONS": [],
       "XPATH_TITLE": "",
       "XPATH_DATE": "",
       "XPATH_LEAD": "",
-      "XPATH_AUTHOR": "",
-      "XPATH_NEWS_URL": ""
+      "XPATH_AUTHOR": ""
     }
   ]
 }
