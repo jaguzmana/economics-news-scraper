@@ -1,0 +1,34 @@
+{
+  "news_websites": [
+    {
+      "name": "la_republica",
+      "url": "https://www.larepublica.co/economia",
+      "XPATHS_NEWS_URLS_LOCATIONS": [
+        ".//div[contains(@class, 'apertura')]/div[@class='flex-grow-1']//a/@href",
+        ".//div[contains(@class, 'more-news')]/div[@id='proportional-anchor-1']//a/@href"
+      ],
+      "XPATH_TITLE": ".//div[contains(@data-epica-module-name, 'Contenido')]//div[contains(@class, 'OpeningPostNormal')]//h2/span/text()",
+      "XPATH_DATE": ".//div[contains(@data-epica-module-name, 'Contenido')]//div[contains(@class, 'OpeningPostNormal')]//span[@class='date']/text()",
+      "XPATH_LEAD": ".//div[@class='lead']/p/text()",
+      "XPATH_AUTHOR": ".//div[@class='author-article']//button/text()"
+    },
+    {
+      "name": "el_espectador",
+      "url": "www.elespectador.com/economia",
+      "XPATHS_NEWS_URLS_LOCATIONS": [],
+      "XPATH_TITLE": "",
+      "XPATH_DATE": "",
+      "XPATH_LEAD": "",
+      "XPATH_AUTHOR": ""
+    },
+    {
+      "name": "el_tiempo",
+      "url": "www.eltiempo.com/economia",
+      "XPATHS_NEWS_URLS_LOCATIONS": [],
+      "XPATH_TITLE": "",
+      "XPATH_DATE": "",
+      "XPATH_LEAD": "",
+      "XPATH_AUTHOR": ""
+    }
+  ]
+}
