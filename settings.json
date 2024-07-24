@@ -2,7 +2,7 @@
   "news_websites": [
     {
       "name": "la_republica",
-      "url": "https://www.larepublica.co/economia",
+      "url": "https://www.larepublica.co/economia/",
       "XPATHS_NEWS_URLS_LOCATIONS": [
         ".//div[contains(@class, 'apertura')]/div[@class='flex-grow-1']//a/@href",
         ".//div[contains(@class, 'more-news')]/div[@id='proportional-anchor-1']//a/@href"
@@ -14,16 +14,18 @@
     },
     {
       "name": "el_espectador",
-      "url": "www.elespectador.com/economia",
-      "XPATHS_NEWS_URLS_LOCATIONS": [],
-      "XPATH_TITLE": "",
-      "XPATH_DATE": "",
-      "XPATH_LEAD": "",
-      "XPATH_AUTHOR": ""
+      "url": "https://www.elespectador.com/economia/",
+      "XPATHS_NEWS_URLS_LOCATIONS": [
+        ".//div[@id='main-layout']//h2[contains(@class, 'Card-Title')]/a/@href"
+      ],
+      "XPATH_TITLE": ".//div[contains(@class, 'ArticleHeader')]//h1[contains(@class, 'Title')]/text()",
+      "XPATH_DATE": ".//div[contains(@class, 'ArticleHeader')]//div[contains(@class, 'Datetime')]/text()",
+      "XPATH_LEAD": ".//div[contains(@class, 'ArticleHeader')]//h2[@class='ArticleHeader-Hook ']/div/text()",
+      "XPATH_AUTHOR": ".//div[contains(@class, 'ArticleHeader')]//div[@class='ArticleHeader-Author']/a/text()"
     },
     {
       "name": "el_tiempo",
-      "url": "www.eltiempo.com/economia",
+      "url": "https://www.eltiempo.com/economia/",
       "XPATHS_NEWS_URLS_LOCATIONS": [],
       "XPATH_TITLE": "",
       "XPATH_DATE": "",
