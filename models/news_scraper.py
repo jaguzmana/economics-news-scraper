@@ -1,7 +1,6 @@
 import requests as r
 import lxml.html as html
 
-# TODO: Modify the class to work with the JSON more effectively.
 class NewsScraper:
     def __init__(self, dict_settings: dict, json_path: str):
         self.dict_settings = dict_settings
@@ -23,12 +22,20 @@ class NewsScraper:
             news_links = set(parsed_html.xpath(xpath))
             self.news_set.update(news_links)
 
-    def extract_news_information(self, parsed_news_html, news_dict) -> dict:
+    def extract_news_information(self, parsed_news_html, news_dict: dict) -> dict:
         news_dict["title"] = parsed_news_html.xpath(self.dict_settings['XPATH_TITLE'])
         news_dict["date"] = parsed_news_html.xpath(self.dict_settings['XPATH_DATE'])
         news_dict["lead"] = parsed_news_html.xpath(self.dict_settings['XPATH_LEAD'])
+        news_dict["author"] = parsed_news_html.xpath(self.dict_settings['XPATH_AUTHOR'])
 
         return news_dict
+
+    def create_valid_news_url(self, url_webpage: str, url_news: str) -> str:
+        if url_news.find(url_webpage) == -1:
+            url_webpage = url_webpage.replace('/economia/', '')
+            return url_webpage + url_news
+
+        return url_news
 
     def scrape(self):
         # Extract News URLs from main page
@@ -37,6 +44,9 @@ class NewsScraper:
 
         # Extract the information for each news
         for news_url in self.news_set:
+            
+            news_url = self.create_valid_news_url(self.dict_settings['url'], news_url)
+            
             news_dict = {
                 "title": "",
                 "date": "",
