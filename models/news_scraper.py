@@ -30,6 +30,13 @@ class NewsScraper:
 
         return news_dict
 
+    # TODO: Implement this function in the code.
+    def is_a_valid_news_url(self, url_webpage: str, url_news: str) -> bool:
+        if url_news.find(url_webpage) == 0 or url_news.find('/economia/') == 0:
+            return True
+
+        return False
+
     def create_valid_news_url(self, url_webpage: str, url_news: str) -> str:
         if url_news.find(url_webpage) == -1:
             url_webpage = url_webpage.replace('/economia/', '')
@@ -45,14 +52,16 @@ class NewsScraper:
         # Extract the information for each news
         for news_url in self.news_set:
             
-            news_url = self.create_valid_news_url(self.dict_settings['url'], news_url)
+            if self.is_a_valid_news_url(self.dict_settings['url'], news_url):
             
-            news_dict = {
-                "title": "",
-                "date": "",
-                "lead": "",
-                "author": "",
-                "url": news_url
-            }
-
-            self.extracted_news.append(self.extract_news_information(self.fetch_html(news_url), news_dict))
+                news_url = self.create_valid_news_url(self.dict_settings['url'], news_url)
+                
+                news_dict = {
+                    "title": "",
+                    "date": "",
+                    "lead": "",
+                    "author": "",
+                    "url": news_url
+                }
+                
+                self.extracted_news.append(self.extract_news_information(self.fetch_html(news_url), news_dict))
