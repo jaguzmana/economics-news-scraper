@@ -26,11 +26,13 @@
     {
       "name": "el_tiempo",
       "url": "https://www.eltiempo.com/economia/",
-      "XPATHS_NEWS_URLS_LOCATIONS": [],
-      "XPATH_TITLE": "",
-      "XPATH_DATE": "",
-      "XPATH_LEAD": "",
-      "XPATH_AUTHOR": ""
+      "XPATHS_NEWS_URLS_LOCATIONS": [
+        ".//main[@class='content']//section[contains(@class, o-section) and not(contains(@class, 'o-section--misportales')) and not(contains(@class, 'u-color-bg--grey'))]//article[contains(@class, 'c-article')]//h3[@class='c-article__title']/a/@href"
+      ],
+      "XPATH_TITLE": ".//article[@class='c-detail']//div[@class='c-detail-header']//h1[@class='c-detail__title']/text()",
+      "XPATH_DATE": "//div[@class='c-detail__info']//figcaption[@class='c-detail__author__txt']//time[@class='c-detail__date']/text()",
+      "XPATH_LEAD": ".//article[@class='c-detail']//div[@class='c-detail-header']//div[@class='c-detail__subtitle']/h2/text()",
+      "XPATH_AUTHOR": ".//div[@class='c-detail__info']//figcaption[@class='c-detail__author__txt']//a[@class='c-detail__author__name' or @class='c-detail__author__txt']/text()"
     }
   ]
 }
