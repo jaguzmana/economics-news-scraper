@@ -11,8 +11,8 @@ def main():
     save_json(json_path[0], la_republica_scraper.extracted_news)
     
     el_espectador_scraper = NewsScraper(settings_dict['news_websites'][1], json_path[1])
-    la_republica_scraper.scrape()
-    save_json(json_path[1], la_republica_scraper.extracted_news)
+    el_espectador_scraper.scrape()
+    save_json(json_path[1], el_espectador_scraper.extracted_news)
 
 if __name__ == '__main__':
     main()
