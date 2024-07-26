@@ -1,22 +1,35 @@
 from models.news_scraper import NewsScraper
 from utils.json_management import load_json, save_json
 from utils.storage_configs import data_storage_config
+from utils.logger_config import logger
 
 def main():
-    settings_dict = load_json('settings.json')
-    json_path = data_storage_config(settings_dict)
+    try:
+        logger.info("Loading settings and creating storage folder")
+        settings_dict = load_json('settings.json')
+        json_path = data_storage_config(settings_dict)
 
-    la_republica_scraper = NewsScraper(settings_dict['news_websites'][0], json_path[0])
-    la_republica_scraper.scrape()
-    save_json(json_path[0], la_republica_scraper.extracted_news)
-    
-    el_espectador_scraper = NewsScraper(settings_dict['news_websites'][1], json_path[1])
-    el_espectador_scraper.scrape()
-    save_json(json_path[1], el_espectador_scraper.extracted_news)
+        logger.info("Configuring Scrapers...")
+        scrapers = []
+        for i, website in enumerate(settings_dict['news_websites']):
+            scraper = NewsScraper(website, json_path[i])
+            scrapers.append(scraper)
 
-    el_tiempo_scraper = NewsScraper(settings_dict['news_websites'][2], json_path[2])
-    el_tiempo_scraper.scrape()
-    save_json(json_path[2], el_tiempo_scraper.extracted_news)
+        count = 0
+        for scraper in scrapers:
+            try:
+                logger.info(f"Scraping Website #{count + 1}...")
+                scraper.scrape()
+                logger.info(f"Saving Scraped Data...")
+                save_json(scraper.json_path, scraper.extracted_news)
+                count += 1
+            except Exception as e:
+                logger.error(f"Error processing {scraper.website}: {e}")
+
+    except Exception as e:
+        logger.critical(f"Unexpected error: {e}")
 
 if __name__ == '__main__':
+    logger.info("Starting Scraping Process...")
     main()
+    logger.info("Scraping Process Completed")
