@@ -1,6 +1,16 @@
 import logging
 
-def logger_config():
+def logger_config() -> logging.Logger:
+    """
+    Configures and returns a logger with both console and file handlers.
+
+    The logger is configured to log messages at the INFO level. Logs are formatted to include the timestamp, log level, and message.
+
+    Returns
+    -------
+    logging.Logger
+        Configured logger instance.
+    """
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
 
