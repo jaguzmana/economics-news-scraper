@@ -19,6 +19,9 @@ def data_storage_config(settings: dict) -> list:
     """
     current_date = datetime.now().strftime("%d-%m-%Y")
 
+    if not os.path.exists('data/'):
+        os.mkdir('data/')
+
     if not os.path.exists(f'data/{current_date}/'):
         os.mkdir(f'data/{current_date}/')
 
