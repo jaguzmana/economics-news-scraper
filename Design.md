@@ -27,7 +27,7 @@ The program must generate a log file with general information about each process
 -- Single URL --> [ **Economics News Scraper** ] -- JSON file (current date) -->
 
 ### Subsystem Decomposition
--- Single URL --> [ **Perform a GET Request** ] -- HTML File --> [ **Extract News URLs** ] -- News URLs --> [ **Select one News URL** ] -- News URL --> [ **Perform a GET Request** ] -- HTML File --> [ **Extract News Information** ] -- News Information --> [ **Save Data in the JSON File** ]
+-- Single URL --> [ **Perform a GET Request** ] -- HTML File --> [ **Extract News URLs** ] -- News URLs --> [ **Select one News URL** ] -- News URL --> [ **Perform a GET Request** ] -- HTML File --> [ **Extract News Information** ] -- News Information --> [ **Save Data in the JSON File** ] -- JSON file (current date) -->
 
 ## Detailed Design
 
@@ -77,7 +77,7 @@ File Name: `settings.json`
 ```
 
 **Structure of JSON News File**
-File Name: `news-dd-mm-yyyy.json`
+File Name: `dd-mm-yyyy.json`
 ```json
 [
   {
