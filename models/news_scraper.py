@@ -68,6 +68,7 @@ class NewsScraper:
             The parsed HTML content of the webpage, or None if an error occurs.
         """
         try:
+            logger.info(f'Fetching: {url}')
             response = r.get(url)
             response.raise_for_status()
             parsed = html.fromstring(response.text)
