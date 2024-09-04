@@ -56,4 +56,4 @@ The goal of this project is to create an Economics News Scraper, taking into acc
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact Information
-For questions or support, please open an issue in the [GitHub repository](https://github.com/jaguzmana/economics-news-scraper/issues) or reach out via [Twitter (now X)](https://x.com/jaguzmana_).
+For questions or support, please open an issue in the [GitHub repository](https://github.com/jaguzmana/economics-news-scraper/issues).
