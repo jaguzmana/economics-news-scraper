@@ -1,3 +1,4 @@
+
 # Design Process
 
 ## Problem
@@ -13,21 +14,23 @@ The information to extract from each news article is the following:
 - Author
 - URL
 
-The program must save the extracted news in a JSON file. The name of the JSON file must include the date of the extraction (day, month, and year).
-The program must generate a log file with general information about each process.
+**Update:** The program now saves the extracted news directly in a MongoDB database instead of a JSON file. Each news document also includes the extraction date. Logging is still performed to a log file.
+
 
 ## Requirements
 - The system must extract the title, date, lead, author, and URL of each economics news article from La Republica, El Tiempo, and El Espectador.
-- The system must save the extracted data in a JSON file, with the JSON's name including the current date (day, month, and year).
+- The system must save the extracted data in a MongoDB database. Each document includes an `extracted_date` field with the extraction date (day, month, and year).
 - The system must save a log with the status of each scraped news article.
+
 
 ## Conceptual Design
 
 ### Input/Output Diagram
--- Single URL --> [ **Economics News Scraper** ] -- JSON file (current date) -->
+Single URL --> [ **Economics News Scraper** ] --> MongoDB (newsdb.articles)
 
 ### Subsystem Decomposition
--- Single URL --> [ **Perform a GET Request** ] -- HTML File --> [ **Extract News URLs** ] -- News URLs --> [ **Select one News URL** ] -- News URL --> [ **Perform a GET Request** ] -- HTML File --> [ **Extract News Information** ] -- News Information --> [ **Save Data in the JSON File** ] -- JSON file (current date) -->
+Single URL --> [ **Perform a GET Request** ] --> HTML File --> [ **Extract News URLs** ] --> News URLs --> [ **Select one News URL** ] --> News URL --> [ **Perform a GET Request** ] --> HTML File --> [ **Extract News Information** ] --> News Information --> [ **Save Data in MongoDB** ] --> MongoDB (newsdb.articles)
+
 
 ## Detailed Design
 
@@ -35,11 +38,10 @@ The program must generate a log file with general information about each process
 - Python
   - Requests module
   - LXML module
-  - JSON module
+  - PyMongo module
+  - Logging module
 
-### JSON File Structures
-
-**Structure of JSON Settings File**
+### Settings File Structure
 File Name: `settings.json`
 
 ```json
@@ -76,16 +78,16 @@ File Name: `settings.json`
 }
 ```
 
-**Structure of JSON News File**
-File Name: `dd-mm-yyyy.json`
+### MongoDB News Document Structure
+Each news article is stored as a document in the `articles` collection in the `newsdb` database. Example:
+
 ```json
-[
-  {
-    "title": "",
-    "date": "",
-    "lead": "",
-    "author": "",
-    "url": ""
-  }
-]
+{
+  "title": "",
+  "date": "",
+  "lead": "",
+  "author": "",
+  "url": "",
+  "extracted_date": "dd-mm-yyyy"
+}
 ```

@@ -3,6 +3,8 @@ import lxml.html as html
 from random import randint
 from time import sleep
 from utils.logger_config import logger
+from pymongo import MongoClient
+from datetime import datetime
 
 class NewsScraper:
     """
@@ -37,7 +39,7 @@ class NewsScraper:
         Main method to scrape news URLs and extract information from each news page.
     """
 
-    def __init__(self, dict_settings: dict, json_path: str) -> None:
+    def __init__(self, dict_settings: dict, mongo_uri: str = None, mongo_db: str = None, mongo_collection: str = None) -> None:
         """
         Initializes the NewsScraper with settings and path for saving JSON.
 
@@ -47,11 +49,23 @@ class NewsScraper:
             Dictionary containing the settings for scraping, including XPaths and the URL of the main page.
         json_path : str
             The path to the JSON file where the scraped news will be saved.
+        mongo_uri : str, optional
+            The MongoDB connection URI (default is None).
+        mongo_db : str, optional
+            The MongoDB database name (default is None).
+        mongo_collection : str, optional
+            The MongoDB collection name (default is None).
         """
         self.dict_settings = dict_settings
-        self.json_path = json_path
         self.news_set = set()
         self.extracted_news = []
+        # MongoDB setup
+        self.mongo_client = None
+        self.mongo_collection = None
+        # Use environment variables if not provided
+        if mongo_uri and mongo_db and mongo_collection:
+            self.mongo_client = MongoClient(mongo_uri)
+            self.mongo_collection = self.mongo_client[mongo_db][mongo_collection]
 
     def fetch_html(self, url: str):
         """
@@ -179,6 +193,26 @@ class NewsScraper:
         """
         return sleep(randint(min, max))
 
+    def insert_to_mongo(self, news_dict: dict):
+        """
+        Inserts the extracted news dictionary into MongoDB.
+
+        Parameters
+        ----------
+        news_dict : dict
+            The dictionary containing the news information to be inserted.
+
+        Returns
+        -------
+        None
+        """
+        if self.mongo_collection is not None:
+            try:
+                result = self.mongo_collection.insert_one(news_dict)
+                logger.info('Inserted news to MongoDB')
+            except Exception as e:
+                logger.error(f'Error inserting to MongoDB: {e}')
+
     def scrape(self) -> None:
         """
         Main method to scrape news URLs and extract information from each news page.
@@ -187,6 +221,7 @@ class NewsScraper:
         -------
         None
         """
+        extracted_date = datetime.now().strftime("%d-%m-%Y")
         # Extract News URLs from main page
         parsed_html = self.fetch_html(self.dict_settings['url'])
         if parsed_html is not None:
@@ -194,23 +229,17 @@ class NewsScraper:
 
             # Extract the information for each news
             for news_url in self.news_set:
-                count = 0
                 try:
                     if self.is_a_valid_news_url(self.dict_settings['url'], news_url):
                         news_url = self.create_valid_news_url(self.dict_settings['url'], news_url)
-
-                        news_dict = {
-                            "title": "",
-                            "date": "",
-                            "lead": "",
-                            "author": "",
-                            "url": news_url
-                        }
-
+                        news_html = self.fetch_html(news_url)
+                        if news_html is not None:
+                            news_dict = {"url": news_url, "extracted_date": extracted_date}
+                            news_dict = self.extract_news_information(news_html, news_dict)
+                            self.extracted_news.append(news_dict)
+                            # Insert into MongoDB if enabled
+                            self.insert_to_mongo(news_dict)
+                            logger.info(f"Scraped and inserted news: {news_url}")
                         self.wait_random_time()
-                        parsed_news_html = self.fetch_html(news_url)
-
-                        if parsed_news_html is not None:
-                            self.extracted_news.append(self.extract_news_information(parsed_news_html, news_dict))
                 except Exception as e:
-                    logger.error(f"Error processing news URL {news_url}: {e}")
+                    logger.error(f"Error scraping news {news_url}: {e}")

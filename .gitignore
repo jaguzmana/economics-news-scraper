@@ -5,3 +5,4 @@ pyrightconfig.json
 data/
 app.log
 TODO.md
+.env

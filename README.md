@@ -1,7 +1,7 @@
 # Economics News Scraper
 
 ## Description
-The goal of this project is to create an Economics News Scraper, taking into account the problem described in the [Design.md](Design.md) file, to demonstrate Python coding knowledge. In this project, a class was created to model the general behavior of a NewsScraper, and it was configured for each website using a JSON settings file. Finally, the scraped data from each website was stored in a JSON file as the problem indicated. The technologies used for this project were *Python* and some HTML knowledge to extract the website-specific content using *XPATH*.
+The goal of this project is to create an Economics News Scraper, taking into account the problem described in the [Design.md](Design.md) file, to demonstrate Python coding knowledge. In this project, a class was created to model the general behavior of a NewsScraper, and it was configured for each website using a JSON settings file. **The scraped data from each website is now stored in a MongoDB database instead of a JSON file.** The technologies used for this project are *Python*, *MongoDB*, and some HTML knowledge to extract the website-specific content using *XPATH*.
 
 ## Table of Contents
 - [Description](#description)
@@ -23,10 +23,11 @@ The goal of this project is to create an Economics News Scraper, taking into acc
    ```bash
    git clone https://github.com/jaguzmana/economics-news-scraper.git
    ```
-  
-2. Create a virtual environment:
+
+2. Create and activate a virtual environment:
    ```bash
    python3 -m venv venv
+   source venv/bin/activate
    ```
 
 3. Install the necessary modules using the `requirements.txt` file:
@@ -34,12 +35,19 @@ The goal of this project is to create an Economics News Scraper, taking into acc
    pip install -r requirements.txt 
    ```
 
-4. Run the project whenever you want or schedule it using *cron*:
+4. Set up MongoDB using Docker Compose:
+   ```bash
+   docker-compose up -d
+   ```
+
+5. Configure your `.env` file with the MongoDB connection details (see example in the repo).
+
+6. Run the project whenever you want or schedule it using *cron*:
    ```bash
    python3 main.py
    ```
 
-5. Check out the `app.log` file or the terminal to ensure the scraper worked as expected.
+7. Check out the `app.log` file or the terminal to ensure the scraper worked as expected. Extracted news will be stored in your MongoDB database (`newsdb.articles`).
 
 ## How to modify the XPATH of a website?
 
@@ -51,6 +59,9 @@ The goal of this project is to create an Economics News Scraper, taking into acc
    - `XPATH_DATE` (Single XPATH)
    - `XPATH_LEAD` (Single XPATH)
    - `XPATH_AUTHOR` (Single XPATH)
+
+## Data Storage
+All extracted news articles are now stored in a MongoDB database (`newsdb`), in the `articles` collection. Each document includes the fields: `title`, `date`, `lead`, `author`, `url`, and `extracted_date`.
   
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
