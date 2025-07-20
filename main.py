@@ -1,18 +1,21 @@
 from models.news_scraper import NewsScraper
-from utils.json_management import load_json, save_json
-from utils.storage_configs import data_storage_config
+from utils.json_management import load_json
 from utils.logger_config import logger
+from decouple import config
 
-def main():
+def main(mongo_uri: str, mongo_db: str, mongo_collection: str) -> None:
     try:
-        logger.info("Loading settings and creating storage folder")
         settings_dict = load_json('settings.json')
-        json_path = data_storage_config(settings_dict)
-
         logger.info("Configuring Scrapers...")
         scrapers = []
-        for i, website in enumerate(settings_dict['news_websites']):
-            scraper = NewsScraper(website, json_path[i])
+
+        for website in settings_dict['news_websites']:
+            scraper = NewsScraper(
+                website,
+                mongo_uri,
+                mongo_db,
+                mongo_collection)
+            
             scrapers.append(scraper)
 
         count = 0
@@ -20,16 +23,18 @@ def main():
             try:
                 logger.info(f"Scraping Website #{count + 1}...")
                 scraper.scrape()
-                logger.info(f"Saving Scraped Data...")
-                save_json(scraper.json_path, scraper.extracted_news)
                 count += 1
             except Exception as e:
-                logger.error(f"Error processing {scraper.website}: {e}")
+                logger.error(f"Error processing {getattr(scraper, 'website', 'unknown')}: {e}")
 
     except Exception as e:
         logger.critical(f"Unexpected error: {e}")
 
 if __name__ == '__main__':
+    mongo_uri = f'mongodb://{config("MONGO_INITDB_ROOT_USERNAME")}:{config("MONGO_INITDB_ROOT_PASSWORD")}@localhost:27017/?authSource=admin'
+    mongo_db = config("MONGO_DB")
+    mongo_collection = config("MONGO_COLLECTION")
+
     logger.info("Starting Scraping Process...")
-    main()
-    logger.info("Scraping Process Completed")
+    main(mongo_uri, mongo_db, mongo_collection)
+    logger.info("Scraping Process Ended")

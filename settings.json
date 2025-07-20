@@ -16,23 +16,24 @@
       "name": "el_espectador",
       "url": "https://www.elespectador.com/economia/",
       "XPATHS_NEWS_URLS_LOCATIONS": [
-        ".//div[@id='main-layout']//h2[contains(@class, 'Card-Title')]/a/@href"
+        ".//h2[contains(@class, 'Card-Title')]/a/@href"
       ],
       "XPATH_TITLE": ".//div[contains(@class, 'ArticleHeader')]//h1[contains(@class, 'Title')]/text()",
       "XPATH_DATE": ".//div[contains(@class, 'ArticleHeader')]//div[contains(@class, 'Datetime')]/text()",
-      "XPATH_LEAD": ".//div[contains(@class, 'ArticleHeader')]//h2[@class='ArticleHeader-Hook ']/div/text()",
+      "XPATH_LEAD": ".//div[contains(@class, 'ArticleHeader')]//h2[@class='ArticleHeader-Hook']/div/text()",
       "XPATH_AUTHOR": ".//div[contains(@class, 'ArticleHeader')]//div[@class='ArticleHeader-Author']/a/text()"
     },
     {
       "name": "el_tiempo",
       "url": "https://www.eltiempo.com/economia/",
       "XPATHS_NEWS_URLS_LOCATIONS": [
-        ".//main[@class='content']//section[contains(@class, o-section) and not(contains(@class, 'o-section--misportales')) and not(contains(@class, 'u-color-bg--grey'))]//article[contains(@class, 'c-article')]//h3[@class='c-article__title']/a/@href"
+        ".//div[@class='c-board-apertura__grid']//h3[@class='c-articulo__titulo']/a/@href",
+        ".//div[@id='more_articles']//h3[@class='c-articulo__titulo']/a/@href"
       ],
-      "XPATH_TITLE": ".//article[contains(@class, 'c-detail')]//div[@class='c-detail-header']//h1[@class='c-detail__title']/text()",
-      "XPATH_DATE": "//div[@class='c-detail__info']//figcaption[@class='c-detail__author__txt']//time[@class='c-detail__date']/text()",
-      "XPATH_LEAD": ".//article[contains(@class, 'c-detail')]//div[@class='c-detail-header']//div[@class='c-detail__subtitle']/h2/text()",
-      "XPATH_AUTHOR": ".//div[@class='c-detail__info']//figcaption[@class='c-detail__author__txt']//a[@class='c-detail__author__name' or @class='c-detail__author__txt']/text()"
+      "XPATH_TITLE": ".//main[@class='content']//h1[@class='c-articulo__titulo']/text()",
+      "XPATH_DATE": ".//main[@class='content']//div[@class='c-articulo__info']//p[@class='c-articulo__autor__grupo']//span[@class='c-articulo__autor__fecha']/time/text()",
+      "XPATH_LEAD": ".//main[@class='content']//div[@class='c-lead']/h2/text()",
+      "XPATH_AUTHOR": ".//main[@class='content']//div[@class='c-articulo__info']//div[@class='c-articulo__autor__content']//a[@class='c-articulo__autor__nombre']/text()"
     }
   ]
 }
