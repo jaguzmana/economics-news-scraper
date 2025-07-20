@@ -59,13 +59,8 @@ class NewsScraper:
         self.dict_settings = dict_settings
         self.news_set = set()
         self.extracted_news = []
-        # MongoDB setup
-        self.mongo_client = None
-        self.mongo_collection = None
-        # Use environment variables if not provided
-        if mongo_uri and mongo_db and mongo_collection:
-            self.mongo_client = MongoClient(mongo_uri)
-            self.mongo_collection = self.mongo_client[mongo_db][mongo_collection]
+        self.mongo_client = MongoClient(mongo_uri)
+        self.mongo_collection = self.mongo_client[mongo_db][mongo_collection]
 
     def fetch_html(self, url: str):
         """
@@ -208,8 +203,7 @@ class NewsScraper:
         """
         if self.mongo_collection is not None:
             try:
-                result = self.mongo_collection.insert_one(news_dict)
-                logger.info('Inserted news to MongoDB')
+                self.mongo_collection.insert_one(news_dict)
             except Exception as e:
                 logger.error(f'Error inserting to MongoDB: {e}')
 
@@ -237,7 +231,6 @@ class NewsScraper:
                             news_dict = {"url": news_url, "extracted_date": extracted_date}
                             news_dict = self.extract_news_information(news_html, news_dict)
                             self.extracted_news.append(news_dict)
-                            # Insert into MongoDB if enabled
                             self.insert_to_mongo(news_dict)
                             logger.info(f"Scraped and inserted news: {news_url}")
                         self.wait_random_time()
