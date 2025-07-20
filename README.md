@@ -49,7 +49,14 @@ The goal of this project is to create an Economics News Scraper, taking into acc
    docker-compose up -d
    ```
 
-5. Configure your `.env` file with the MongoDB connection details (see example in the repo).
+5. Create a `.env` file in the project root with the following content (edit as needed):
+
+   ```env
+   MONGO_INITDB_ROOT_USERNAME=root
+   MONGO_INITDB_ROOT_PASSWORD=example
+   MONGO_DB=newsdb
+   MONGO_COLLECTION=articles
+   ```
 
 6. Run the project whenever you want or schedule it using *cron*:
 
