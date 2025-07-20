@@ -3,7 +3,7 @@ from utils.json_management import load_json
 from utils.logger_config import logger
 from decouple import config
 
-def main(mongo_uri: str, mongo_db: str, mongo_collection:str) -> None:
+def main(mongo_uri: str, mongo_db: str, mongo_collection: str) -> None:
     try:
         settings_dict = load_json('settings.json')
         logger.info("Configuring Scrapers...")
