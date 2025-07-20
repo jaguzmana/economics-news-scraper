@@ -2,7 +2,7 @@
 
 ## Description
 
-The goal of this project is to create an Economics News Scraper, taking into account the problem described in the [Design.md](Design.md) file, to demonstrate Python coding knowledge. In this project, a class was created to model the general behavior of a NewsScraper, and it was configured for each website using a JSON settings file. **The scraped data from each website is now stored in a MongoDB database instead of a JSON file.** The technologies used for this project are *Python*, *MongoDB*, and some HTML knowledge to extract the website-specific content using *XPATH*.
+The goal of this project is to create an Economics News Scraper, taking into account the problem described in the [Design.md](Design.md) file, to demonstrate Python coding knowledge. In this project, a class was created to model the general behavior of a NewsScraper, and it was configured for each website using a JSON settings file. **The scraped data from each website is now stored in a MongoDB database instead of a JSON file.** The technologies used for this project are *Python*, *MongoDB*, *Docker*, and some HTML knowledge to extract the website-specific content using *XPATH*.
 
 ## Table of Contents
 
@@ -20,6 +20,7 @@ The goal of this project is to create an Economics News Scraper, taking into acc
 ### Prerequisites
 
 - **Python:** Ensure Python is installed on your machine and you can create a virtual environment to install the necessary modules.
+- **Docker & Docker Compose:** Required to run MongoDB as a containerized service for data storage.
 
 ### Steps
 
