@@ -8,21 +8,25 @@ from datetime import datetime
 
 class NewsScraper:
     """
-    A class used to scrape news from a website using specified settings.
+    A class used to scrape news from a website using specified settings and store the results in MongoDB.
 
     Attributes
     ----------
     dict_settings : dict
         Dictionary containing the settings for scraping, including XPaths and the URL of the main page.
-    json_path : str
-        The path to the JSON file where the scraped news will be saved.
     news_set : set
         A set to store unique news URLs.
     extracted_news : list
-        A list to store the extracted news information.
+        A list to store the extracted news information (for in-memory use only).
+    mongo_client : MongoClient
+        The MongoDB client instance.
+    mongo_collection : Collection
+        The MongoDB collection where news articles are stored.
 
     Methods
     -------
+    validate_db_connection()
+        Validates the connection to the MongoDB database.
     fetch_html(url)
         Fetches the HTML content of a given URL.
     extract_news_urls(parsed_html)
@@ -35,20 +39,20 @@ class NewsScraper:
         Creates a valid news URL if it is not already complete.
     wait_random_time(min=1, max=5)
         Pauses execution for a random time between min and max seconds.
+    insert_to_mongo(news_dict)
+        Inserts a news dictionary into MongoDB.
     scrape()
         Main method to scrape news URLs and extract information from each news page.
     """
 
     def __init__(self, dict_settings: dict, mongo_uri: str = None, mongo_db: str = None, mongo_collection: str = None) -> None:
         """
-        Initializes the NewsScraper with settings and path for saving JSON.
+        Initializes the NewsScraper with settings and MongoDB connection details.
 
         Parameters
         ----------
         dict_settings : dict
             Dictionary containing the settings for scraping, including XPaths and the URL of the main page.
-        json_path : str
-            The path to the JSON file where the scraped news will be saved.
         mongo_uri : str, optional
             The MongoDB connection URI (default is None).
         mongo_db : str, optional
@@ -59,8 +63,20 @@ class NewsScraper:
         self.dict_settings = dict_settings
         self.news_set = set()
         self.extracted_news = []
-        self.mongo_client = MongoClient(mongo_uri)
+        self.mongo_client = MongoClient(mongo_uri, serverSelectionTimeoutMS=3000)
+        # Validate connection immediately and raise if not connected
+        self.validate_db_connection()
         self.mongo_collection = self.mongo_client[mongo_db][mongo_collection]
+
+    def validate_db_connection(self) -> None:
+        """
+        Validates the connection to the MongoDB database. Raises an exception if not connected.
+        """
+        try:
+            self.mongo_client.admin.command('ping')
+        except Exception as e:
+            logger.critical(f"Could not connect to MongoDB: {e}")
+            raise RuntimeError(f"Could not connect to MongoDB: {e}")
 
     def fetch_html(self, url: str):
         """
